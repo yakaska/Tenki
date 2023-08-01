@@ -1,12 +1,17 @@
 spring:
-  security:
-    user:
-      name: User
-      password: User
   datasource:
-    url: jdbc:h2:mem:tenki_db
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
-    jpa:
-      spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    url: jdbc:postgresql://localhost:5432/tenki
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  sql:
+    init:
+      mode: always
