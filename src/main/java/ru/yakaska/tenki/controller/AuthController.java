@@ -1,39 +1,27 @@
 package ru.yakaska.tenki.controller;
 
-import org.springframework.stereotype.*;
-import org.springframework.validation.*;
+import lombok.*;
 import org.springframework.web.bind.annotation.*;
 import ru.yakaska.tenki.dto.*;
+import ru.yakaska.tenki.entity.*;
 import ru.yakaska.tenki.service.*;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final RegisterService registerService;
-
-    public AuthController(RegisterService registerService) {
-        this.registerService = registerService;
-    }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "auth/login";
-    }
-
-    @GetMapping("/register")
-    public String registerPage(@ModelAttribute("user") UserDto user) {
-        return "auth/register";
-    }
+    private final AuthService authService;
 
     @PostMapping("/register")
-    public String performRegister(@ModelAttribute("user") UserDto user, BindingResult result) {
-        if (result.hasErrors())
-            return "auth/register";
+    public User registerUser(@RequestBody UserDto user) {
+        return authService.register(user.getUsername(), user.getPassword());
+    }
 
-        registerService.register(user);
-
-        return "redirect:/auth/login";
+    @PostMapping("/login")
+    public User loginUser(@RequestBody UserDto user) {
+        System.out.println(user.getUsername());
+        return authService.login(user.getUsername(), user.getPassword());
     }
 
 }

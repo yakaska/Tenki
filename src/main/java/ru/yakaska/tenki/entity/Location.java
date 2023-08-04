@@ -3,16 +3,18 @@ package ru.yakaska.tenki.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
+@Builder
 @AllArgsConstructor
-@Entity(name = "locations")
+@NoArgsConstructor
+@Table(name = "locations")
+@Entity
 public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "location_id")
+    private Long locationId;
 
     private String name;
 
