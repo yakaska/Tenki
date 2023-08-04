@@ -7,8 +7,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "locations")
 @Entity
+@Table(name = "locations")
 public class Location {
 
     @Id

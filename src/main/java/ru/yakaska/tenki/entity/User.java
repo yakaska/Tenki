@@ -33,6 +33,14 @@ public class User implements UserDetails {
     )
     private Set<Role> authorities;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_location_junction",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "location_id")}
+    )
+    private Set<Location> locations;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

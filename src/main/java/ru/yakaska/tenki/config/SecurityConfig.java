@@ -5,8 +5,8 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.*;
 import org.springframework.security.config.annotation.web.builders.*;
+import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.core.userdetails.*;
-import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.crypto.factory.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.*;
@@ -30,7 +30,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.anyRequest().authenticated();
@@ -38,7 +38,6 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
-
 
 
 

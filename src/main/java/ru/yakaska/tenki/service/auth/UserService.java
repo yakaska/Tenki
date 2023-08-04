@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.service;
+package ru.yakaska.tenki.service.auth;
 
 import lombok.*;
 import org.springframework.security.core.userdetails.*;
