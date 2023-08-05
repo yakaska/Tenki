@@ -1,8 +1,4 @@
 spring:
-  security:
-    user:
-      name: user
-      password: user
   datasource:
     url: jdbc:postgresql://localhost:5432/tenki
     username: postgres
@@ -10,15 +6,9 @@ spring:
     driverClassName: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: false
     hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-    defer-datasource-initialization: true
-  sql:
-    init:
-      mode: always
+      ddl-auto: update
 
-api-key: 12d10bef38432936b4fd94ee49e55a86
+app:
+  jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
+  jwt-expiration-milliseconds: 60480000

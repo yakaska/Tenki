@@ -1,12 +1,14 @@
-package ru.yakaska.tenki.dto;
+package ru.yakaska.tenki.payload;
 
 import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserDto {
+public class LoginDto {
 
     private String username;
+
+    private String password;
 
 }
