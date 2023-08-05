@@ -19,4 +19,12 @@ public class LocationController {
         return locationService.findAll();
     }
 
+    @PostMapping("/")
+    public LocationDto add(@RequestBody LocationDto locationDto) {
+        return locationService.add(locationDto.getName());
+    }
+
+
+
+
 }

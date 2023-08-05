@@ -11,8 +11,8 @@ public interface LocationService {
 
     List<LocationDto> findAll();
 
-    LocationDto add(BigDecimal latitude, BigDecimal longitude);
+    LocationDto add(String locationName);
 
-    LocationDto delete(String name);
+    LocationDto delete(String locationName);
 
 }

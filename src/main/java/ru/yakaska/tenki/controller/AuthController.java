@@ -8,7 +8,6 @@ import ru.yakaska.tenki.service.auth.*;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-// TODO: 04.08.2023 add validation and exception handling
 public class AuthController {
 
     private final AuthService authService;

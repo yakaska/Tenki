@@ -17,8 +17,6 @@ import java.util.*;
 @Service
 @Transactional
 @RequiredArgsConstructor
-// TODO: 04.08.2023 Add DTO's
-
 public class AuthService {
 
     private final UserRepository userRepository;
