@@ -18,6 +18,7 @@ public class Location {
     @Column(name = "location_id")
     private Long locationId;
 
+    @Column(unique = true)
     private String name;
 
     private Double latitude;

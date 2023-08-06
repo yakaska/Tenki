@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.*;
 import org.springframework.stereotype.*;
 import ru.yakaska.tenki.entity.*;
 import ru.yakaska.tenki.exception.*;
-import ru.yakaska.tenki.payload.*;
+import ru.yakaska.tenki.payload.auth.*;
 import ru.yakaska.tenki.repository.*;
 import ru.yakaska.tenki.security.*;
 import ru.yakaska.tenki.service.*;

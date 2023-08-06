@@ -2,7 +2,7 @@ package ru.yakaska.tenki.controller;
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import ru.yakaska.tenki.payload.*;
+import ru.yakaska.tenki.payload.auth.*;
 import ru.yakaska.tenki.service.*;
 
 @RestController

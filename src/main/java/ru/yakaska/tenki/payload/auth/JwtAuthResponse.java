@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.payload;
+package ru.yakaska.tenki.payload.auth;
 
 import lombok.*;
 
