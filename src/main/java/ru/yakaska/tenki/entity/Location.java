@@ -25,4 +25,7 @@ public class Location {
 
     private Double longitude;
 
+    @ManyToMany(mappedBy = "locations")
+    private Set<User> users;
+
 }

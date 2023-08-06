@@ -1,5 +1,6 @@
 package ru.yakaska.tenki.controller;
 
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import ru.yakaska.tenki.payload.location.*;
 import ru.yakaska.tenki.service.*;
@@ -21,14 +22,26 @@ public class LocationController {
         return locationService.getAllLocations();
     }
 
+    @GetMapping("/{id}")
+    public LocationDto getLocationById(@PathVariable Long id) {
+        return locationService.getLocationById(id);
+    }
+
     @GetMapping("/search")
     public LocationDto searchLocation(@RequestParam("q") String locationName) {
         return locationService.searchLocation(locationName);
     }
 
     @PostMapping("/")
-    public LocationDto addLocation(@RequestBody LocationDto locationDto) {
-        return locationService.addLocation(locationDto);
+    public ResponseEntity<LocationDto> addLocation(@RequestBody LocationDto locationDto) {
+        return new ResponseEntity<>(locationService.addLocation(locationDto), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> removeLocation(@PathVariable(name = "id") Long id) {
+        locationService.deleteLocationById(id);
+
+        return new ResponseEntity<>("Location deleted successfully.", HttpStatus.OK);
     }
 
 }

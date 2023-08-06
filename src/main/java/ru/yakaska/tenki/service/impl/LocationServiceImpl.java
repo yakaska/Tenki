@@ -5,6 +5,7 @@ import org.springframework.security.core.*;
 import org.springframework.security.core.context.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
 import org.springframework.web.client.*;
 import org.springframework.web.util.*;
 import ru.yakaska.tenki.entity.User;
@@ -47,25 +48,51 @@ public class LocationServiceImpl implements LocationService {
                 () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
         );
 
-        return user.getLocations().stream().map(location -> {
+        return user.getLocations().stream()
+                .map(location -> {
 
-            WeatherResponse weatherResponse = getWeather(location.getName());
+                    WeatherResponse weatherResponse = getWeather(location.getName());
 
-            LocationDto locationDto = new LocationDto();
-            locationDto.setId(location.getLocationId());
-            locationDto.setName(location.getName());
-            locationDto.setWeatherDescription(weatherResponse.getWeatherDescription());
-            locationDto.setTemperature(weatherResponse.getTemperature());
+                    LocationDto locationDto = new LocationDto();
+                    locationDto.setId(location.getLocationId());
+                    locationDto.setName(location.getName());
+                    locationDto.setWeatherDescription(weatherResponse.getWeatherDescription());
+                    locationDto.setTemperature(weatherResponse.getTemperature());
 
-            return locationDto;
-        }).toList();
+                    return locationDto;
+                })
+                .sorted(Comparator.comparing(LocationDto::getId))
+                .toList();
+    }
+
+    @Override
+    public LocationDto getLocationById(Long locationId) {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
+        );
+
+        Location location = locationRepository.findByLocationIdAndUsersUserId(
+                locationId, user.getUserId()
+        ).orElseThrow(() -> new TenkiException(HttpStatus.NOT_FOUND, "No such added location"));
+
+
+        WeatherResponse weatherResponse = getWeather(location.getName());
+
+        LocationDto locationDto = new LocationDto();
+        locationDto.setId(location.getLocationId());
+        locationDto.setName(location.getName());
+        locationDto.setTemperature(weatherResponse.getTemperature());
+        locationDto.setWeatherDescription(weatherResponse.getWeatherDescription());
+
+        return locationDto;
     }
 
     @Override
     public LocationDto searchLocation(String locationName) {
         WeatherResponse weatherResponse = getWeather(locationName);
-
-        System.out.println(weatherResponse.getLatitude());
 
         Location location;
         if (!locationRepository.existsByName(locationName)) {
@@ -115,6 +142,18 @@ public class LocationServiceImpl implements LocationService {
         resultDto.setWeatherDescription(weatherResponse.getWeatherDescription());
 
         return resultDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteLocationById(Long locationId) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = userRepository.findByUsername(auth.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
+        );
+
+        user.getLocations().removeIf(location -> location.getLocationId().equals(locationId));
     }
 
     private WeatherResponse getWeather(String locationName) {
