@@ -19,4 +19,7 @@ public class WeatherResponse {
 	@JsonProperty("id")
 	private Long id;
 
+	@JsonProperty("coord")
+	private Coordinate coordinate;
+
 }

@@ -21,9 +21,15 @@ public class LocationDto {
     private String state;
 
     @JsonProperty("desc")
-    private String weatherDescription;
+    private String description;
 
     @JsonProperty("temp")
     private Double temperature;
+
+    @JsonProperty("lat")
+    private Double latitude;
+
+    @JsonProperty("lon")
+    private Double longitude;
 
 }

@@ -70,5 +70,4 @@ public class OpenWeatherApi {
         return cities;
     }
 
-
 }
