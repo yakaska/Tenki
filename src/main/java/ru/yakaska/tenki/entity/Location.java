@@ -6,7 +6,6 @@ import lombok.*;
 import java.util.*;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -15,8 +14,7 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "location_id")
-    private Long locationId;
+    private Long id;
 
     @Column(unique = true)
     private String name;
@@ -24,8 +22,5 @@ public class Location {
     private Double latitude;
 
     private Double longitude;
-
-    @ManyToMany(mappedBy = "locations")
-    private Set<User> users;
 
 }
