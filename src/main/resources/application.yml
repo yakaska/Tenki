@@ -17,4 +17,4 @@ app:
 api:
   host:
     baseurl: https://api.openweathermap.org/data/2.5/weather
-    appid: 12d10bef38432936b4fd94ee49e55a86
+    appid:
