@@ -6,8 +6,7 @@ import org.springframework.security.core.context.*;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
-import org.springframework.web.client.*;
-import org.springframework.web.util.*;
+import ru.yakaska.tenki.api.OpenWeatherApi;
 import ru.yakaska.tenki.entity.User;
 import ru.yakaska.tenki.entity.*;
 import ru.yakaska.tenki.exception.*;
@@ -16,26 +15,21 @@ import ru.yakaska.tenki.payload.location.response.*;
 import ru.yakaska.tenki.repository.*;
 import ru.yakaska.tenki.service.*;
 
-import java.net.*;
 import java.util.*;
 
 @Service
 public class LocationServiceImpl implements LocationService {
 
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/weather";
-
-    private static final String APP_ID = "12d10bef38432936b4fd94ee49e55a86";
-
     private final LocationRepository locationRepository;
 
     private final UserRepository userRepository;
 
-    public LocationServiceImpl(LocationRepository locationRepository, UserRepository userRepository) {
+    private final OpenWeatherApi openWeatherApi;
+
+    public LocationServiceImpl(LocationRepository locationRepository, UserRepository userRepository, OpenWeatherApi openWeatherApi) {
         this.locationRepository = locationRepository;
         this.userRepository = userRepository;
+        this.openWeatherApi = openWeatherApi;
     }
 
     @Override
@@ -51,7 +45,7 @@ public class LocationServiceImpl implements LocationService {
         return user.getLocations().stream()
                 .map(location -> {
 
-                    WeatherResponse weatherResponse = getWeather(location.getName());
+                    WeatherResponse weatherResponse = openWeatherApi.getWeather(location.getName());
 
                     LocationDto locationDto = new LocationDto();
                     locationDto.setId(location.getLocationId());
@@ -79,20 +73,12 @@ public class LocationServiceImpl implements LocationService {
         ).orElseThrow(() -> new TenkiException(HttpStatus.NOT_FOUND, "No such added location"));
 
 
-        WeatherResponse weatherResponse = getWeather(location.getName());
-
-        LocationDto locationDto = new LocationDto();
-        locationDto.setId(location.getLocationId());
-        locationDto.setName(location.getName());
-        locationDto.setTemperature(weatherResponse.getTemperature());
-        locationDto.setWeatherDescription(weatherResponse.getWeatherDescription());
-
-        return locationDto;
+        return mapToDto(location);
     }
 
     @Override
     public LocationDto searchLocation(String locationName) {
-        WeatherResponse weatherResponse = getWeather(locationName);
+        WeatherResponse weatherResponse = openWeatherApi.getWeather(locationName);
 
         Location location;
         if (!locationRepository.existsByName(locationName)) {
@@ -133,15 +119,7 @@ public class LocationServiceImpl implements LocationService {
         user.getLocations().add(location);
         userRepository.save(user);
 
-        WeatherResponse weatherResponse = getWeather(location.getName());
-
-        LocationDto resultDto = new LocationDto();
-        resultDto.setId(location.getLocationId());
-        resultDto.setName(location.getName());
-        resultDto.setTemperature(weatherResponse.getTemperature());
-        resultDto.setWeatherDescription(weatherResponse.getWeatherDescription());
-
-        return resultDto;
+        return mapToDto(location);
     }
 
     @Override
@@ -153,23 +131,23 @@ public class LocationServiceImpl implements LocationService {
                 () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
         );
 
-        user.getLocations().removeIf(location -> location.getLocationId().equals(locationId));
+        boolean isRemoved = user.getLocations().removeIf(location -> location.getLocationId().equals(locationId));
+        if (!isRemoved) {
+            throw new TenkiException(HttpStatus.BAD_REQUEST, "Could not find location");
+        }
     }
 
-    private WeatherResponse getWeather(String locationName) {
-        URI uri = UriComponentsBuilder.fromUriString(BASE_URL)
-                .queryParam("q", locationName)
-                .queryParam("units", "metric")
-                .queryParam("appid", APP_ID)
-                .build(false)
-                .toUri();
 
-        WeatherResponse weatherResponse = restTemplate.getForEntity(uri, WeatherResponse.class).getBody();
+    private LocationDto mapToDto(Location location) {
+        WeatherResponse weatherResponse = openWeatherApi.getWeather(location.getName());
 
-        if (weatherResponse == null) {
-            throw new IllegalStateException("Weather for that location is not available");
-        }
-        return weatherResponse;
+        LocationDto resultDto = new LocationDto();
+        resultDto.setId(location.getLocationId());
+        resultDto.setName(location.getName());
+        resultDto.setTemperature(weatherResponse.getTemperature());
+        resultDto.setWeatherDescription(weatherResponse.getWeatherDescription());
+
+        return resultDto;
     }
 
 }

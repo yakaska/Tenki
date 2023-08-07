@@ -12,3 +12,9 @@ spring:
 app:
   jwt-secret: daf66e01593f61a15b857cf433aae03a005812b31234e149036bcc8dee755dbb
   jwt-expiration-milliseconds: 60480000
+
+
+api:
+  host:
+    baseurl: https://api.openweathermap.org/data/2.5/weather
+    appid: 12d10bef38432936b4fd94ee49e55a86
