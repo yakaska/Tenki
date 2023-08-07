@@ -1,32 +1,37 @@
 package ru.yakaska.tenki.service.impl;
 
-import org.springframework.http.*;
-import org.springframework.security.core.*;
-import org.springframework.security.core.context.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yakaska.tenki.api.OpenWeatherApi;
+import ru.yakaska.tenki.entity.Location;
 import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.entity.*;
-import ru.yakaska.tenki.exception.*;
-import ru.yakaska.tenki.payload.location.*;
-import ru.yakaska.tenki.payload.location.response.*;
-import ru.yakaska.tenki.repository.*;
-import ru.yakaska.tenki.service.*;
+import ru.yakaska.tenki.exception.TenkiException;
+import ru.yakaska.tenki.payload.location.LocationDto;
+import ru.yakaska.tenki.payload.location.response.WeatherResponse;
+import ru.yakaska.tenki.repository.LocationRepository;
+import ru.yakaska.tenki.repository.UserRepository;
+import ru.yakaska.tenki.service.CurrentUserService;
+import ru.yakaska.tenki.service.LocationService;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class LocationServiceImpl implements LocationService {
 
+    private final CurrentUserService currentUserService;
     private final LocationRepository locationRepository;
 
     private final UserRepository userRepository;
 
     private final OpenWeatherApi openWeatherApi;
 
-    public LocationServiceImpl(LocationRepository locationRepository, UserRepository userRepository, OpenWeatherApi openWeatherApi) {
+    public LocationServiceImpl(CurrentUserService currentUserService, LocationRepository locationRepository, UserRepository userRepository, OpenWeatherApi openWeatherApi) {
+        this.currentUserService = currentUserService;
         this.locationRepository = locationRepository;
         this.userRepository = userRepository;
         this.openWeatherApi = openWeatherApi;
@@ -35,12 +40,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> getAllLocations() {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        // TODO: 07.08.2023 extract to current user provider
-        User user = userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
-        );
+        User user = currentUserService.getCurrentUser();
 
         return user.getLocations().stream()
                 .map(location -> {
@@ -62,11 +62,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDto getLocationById(Long locationId) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
-        );
+        User user = currentUserService.getCurrentUser();
 
         Location location = locationRepository.findByLocationIdAndUsersUserId(
                 locationId, user.getUserId()
@@ -105,12 +101,8 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public LocationDto addLocation(LocationDto locationDto) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // TODO: 07.08.2023 extract to current user provider
-        User user = userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
-        );
+        User user = currentUserService.getCurrentUser();
 
         Location location = locationRepository.findById(locationDto.getId()).orElseThrow(
                 () -> new TenkiException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not find location")
