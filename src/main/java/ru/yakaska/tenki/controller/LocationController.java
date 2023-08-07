@@ -28,7 +28,7 @@ public class LocationController {
     }
 
     @GetMapping("/search")
-    public LocationDto searchLocation(@RequestParam("q") String locationName) {
+    public List<LocationDto> searchLocation(@RequestParam("q") String locationName) {
         return locationService.searchLocation(locationName);
     }
 

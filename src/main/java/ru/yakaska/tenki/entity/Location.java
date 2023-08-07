@@ -3,8 +3,6 @@ package ru.yakaska.tenki.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.*;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +16,10 @@ public class Location {
 
     @Column(unique = true)
     private String name;
+
+    private String country;
+
+    private String state;
 
     private Double latitude;
 

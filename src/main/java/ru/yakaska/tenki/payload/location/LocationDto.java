@@ -1,6 +1,7 @@
 package ru.yakaska.tenki.payload.location;
 
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonInclude.*;
 import lombok.*;
 
 @Data
@@ -11,6 +12,13 @@ public class LocationDto {
 
     @JsonProperty("name")
     private String name;
+
+    @JsonProperty("country")
+    private String country;
+
+    @JsonProperty("state")
+    @JsonInclude(Include.NON_NULL)
+    private String state;
 
     @JsonProperty("desc")
     private String weatherDescription;

@@ -10,7 +10,7 @@ public interface LocationService {
 
     LocationDto getLocationById(Long locationId);
 
-    LocationDto searchLocation(String locationName);
+    List<LocationDto> searchLocation(String locationName);
 
     LocationDto addLocation(LocationDto locationDto);
 
