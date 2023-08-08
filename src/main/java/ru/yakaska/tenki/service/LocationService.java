@@ -1,8 +1,8 @@
 package ru.yakaska.tenki.service;
 
-import ru.yakaska.tenki.payload.location.*;
+import ru.yakaska.tenki.payload.location.LocationDto;
 
-import java.util.*;
+import java.util.List;
 
 public interface LocationService {
 

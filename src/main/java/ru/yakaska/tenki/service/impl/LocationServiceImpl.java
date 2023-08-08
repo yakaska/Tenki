@@ -1,22 +1,23 @@
 package ru.yakaska.tenki.service.impl;
 
-import org.springframework.http.*;
-import org.springframework.security.core.*;
-import org.springframework.security.core.context.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-import ru.yakaska.tenki.api.*;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.yakaska.tenki.api.OpenWeatherApi;
+import ru.yakaska.tenki.entity.Location;
 import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.entity.*;
-import ru.yakaska.tenki.exception.*;
-import ru.yakaska.tenki.payload.location.*;
-import ru.yakaska.tenki.payload.location.geo.*;
-import ru.yakaska.tenki.payload.location.weather.*;
-import ru.yakaska.tenki.repository.*;
-import ru.yakaska.tenki.service.*;
+import ru.yakaska.tenki.payload.location.LocationDto;
+import ru.yakaska.tenki.payload.location.geo.City;
+import ru.yakaska.tenki.payload.location.weather.WeatherResponse;
+import ru.yakaska.tenki.repository.UserRepository;
+import ru.yakaska.tenki.service.CurrentUserService;
+import ru.yakaska.tenki.service.LocationService;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -27,7 +28,7 @@ public class LocationServiceImpl implements LocationService {
 
     private final OpenWeatherApi openWeatherApi;
 
-    public LocationServiceImpl(CurrentUserService currentUserService,UserRepository userRepository, OpenWeatherApi openWeatherApi) {
+    public LocationServiceImpl(CurrentUserService currentUserService, UserRepository userRepository, OpenWeatherApi openWeatherApi) {
         this.currentUserService = currentUserService;
         this.userRepository = userRepository;
         this.openWeatherApi = openWeatherApi;
@@ -52,7 +53,7 @@ public class LocationServiceImpl implements LocationService {
         Location location = user.getLocations()
                 .stream()
                 .filter(loc -> loc.getId().equals(locationId)).findFirst().orElseThrow(
-                        () -> new TenkiException(HttpStatus.BAD_REQUEST, "No such location")
+                        () -> new ResourceNotFoundException("No such location")
                 );
 
         return mapToDto(location);
@@ -66,24 +67,19 @@ public class LocationServiceImpl implements LocationService {
         return cities
                 .stream()
                 .map(city -> {
-                    WeatherResponse weatherResponse = openWeatherApi.getWeather(city.getLatitude(), city.getLongitude());
-                    LocationDto locationDto = new LocationDto();
-                    locationDto.setId(weatherResponse.getId());
-                    locationDto.setName(city.getName());
-                    locationDto.setCountry(city.getCountry());
-                    locationDto.setState(city.getState());
-                    locationDto.setTemperature(weatherResponse.getMain().getTemperature());
-                    locationDto.setDescription(weatherResponse.getWeather().get(0).getDescription());
-                    locationDto.setLatitude(weatherResponse.getCoordinate().getLatitude());
-                    locationDto.setLongitude(weatherResponse.getCoordinate().getLongitude());
-                    return locationDto;
+                    Location location = new Location();
+                    location.setName(city.getName());
+                    location.setCountry(city.getCountry());
+                    location.setState(city.getState());
+                    location.setLatitude(city.getLatitude());
+                    location.setLongitude(city.getLongitude());
+                    return mapToDto(location);
                 })
                 .toList();
     }
 
     @Override
     public LocationDto addLocation(LocationDto locationDto) {
-
         User user = currentUserService.getCurrentUser();
 
         Location location = new Location();
@@ -111,7 +107,7 @@ public class LocationServiceImpl implements LocationService {
 
         boolean isRemoved = user.getLocations().removeIf(location -> location.getId().equals(locationId));
         if (!isRemoved) {
-            throw new TenkiException(HttpStatus.BAD_REQUEST, "Could not find location");
+            throw new ResourceNotFoundException("Could not find location");
         }
     }
 
@@ -120,7 +116,7 @@ public class LocationServiceImpl implements LocationService {
         WeatherResponse weatherResponse = openWeatherApi.getWeather(location.getLatitude(), location.getLongitude());
 
         LocationDto resultDto = new LocationDto();
-        resultDto.setId(location.getId());
+        resultDto.setId(weatherResponse.getId());
         resultDto.setName(location.getName());
         resultDto.setCountry(location.getCountry());
         resultDto.setState(location.getState());

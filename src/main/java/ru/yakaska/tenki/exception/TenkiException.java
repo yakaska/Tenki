@@ -1,7 +1,7 @@
 package ru.yakaska.tenki.exception;
 
-import lombok.*;
-import org.springframework.http.*;
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public class TenkiException extends RuntimeException{

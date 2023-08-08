@@ -2,7 +2,7 @@ package ru.yakaska.tenki.payload.error;
 
 import lombok.Getter;
 
-import java.util.*;
+import java.util.Date;
 
 @Getter
 public class ErrorDetails {

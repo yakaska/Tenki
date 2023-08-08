@@ -1,11 +1,12 @@
 package ru.yakaska.tenki.controller;
 
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yakaska.tenki.payload.location.*;
-import ru.yakaska.tenki.service.*;
+import ru.yakaska.tenki.payload.location.LocationDto;
+import ru.yakaska.tenki.service.LocationService;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/location")

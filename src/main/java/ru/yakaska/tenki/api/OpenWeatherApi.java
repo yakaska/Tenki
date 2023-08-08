@@ -1,18 +1,19 @@
 package ru.yakaska.tenki.api;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.context.annotation.*;
-import org.springframework.core.*;
-import org.springframework.http.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.client.*;
-import org.springframework.web.util.*;
-import ru.yakaska.tenki.exception.*;
-import ru.yakaska.tenki.payload.location.geo.*;
-import ru.yakaska.tenki.payload.location.weather.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+import ru.yakaska.tenki.exception.TenkiException;
+import ru.yakaska.tenki.payload.location.geo.City;
+import ru.yakaska.tenki.payload.location.weather.WeatherResponse;
 
-import java.net.*;
-import java.util.*;
+import java.net.URI;
+import java.util.List;
 
 @Component
 @Scope("singleton")

@@ -1,16 +1,16 @@
 package ru.yakaska.tenki.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.*;
-import io.jsonwebtoken.security.*;
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.http.*;
-import org.springframework.security.core.*;
-import org.springframework.stereotype.*;
-import ru.yakaska.tenki.exception.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+import ru.yakaska.tenki.exception.TenkiException;
 
-import java.security.*;
-import java.util.*;
+import java.security.Key;
+import java.util.Date;
 
 @Component
 public class JwtTokenProvider {

@@ -1,17 +1,19 @@
 package ru.yakaska.tenki.service.impl;
 
-import org.springframework.http.*;
-import org.springframework.security.authentication.*;
-import org.springframework.security.core.*;
-import org.springframework.security.core.context.*;
-import org.springframework.security.crypto.password.*;
-import org.springframework.stereotype.*;
-import ru.yakaska.tenki.entity.*;
-import ru.yakaska.tenki.exception.*;
-import ru.yakaska.tenki.payload.auth.*;
-import ru.yakaska.tenki.repository.*;
-import ru.yakaska.tenki.security.*;
-import ru.yakaska.tenki.service.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import ru.yakaska.tenki.entity.User;
+import ru.yakaska.tenki.exception.TenkiException;
+import ru.yakaska.tenki.payload.auth.LoginDto;
+import ru.yakaska.tenki.payload.auth.RegisterDto;
+import ru.yakaska.tenki.repository.UserRepository;
+import ru.yakaska.tenki.security.JwtTokenProvider;
+import ru.yakaska.tenki.service.AuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService {

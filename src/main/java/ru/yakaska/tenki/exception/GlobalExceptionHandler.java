@@ -1,12 +1,14 @@
 package ru.yakaska.tenki.exception;
 
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.*;
-import org.springframework.web.servlet.mvc.method.annotation.*;
-import ru.yakaska.tenki.payload.error.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import ru.yakaska.tenki.payload.error.ErrorDetails;
 
-import java.util.*;
+import java.util.Date;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {

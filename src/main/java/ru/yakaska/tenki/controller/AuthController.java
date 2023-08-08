@@ -1,9 +1,15 @@
 package ru.yakaska.tenki.controller;
 
-import org.springframework.http.*;
-import org.springframework.web.bind.annotation.*;
-import ru.yakaska.tenki.payload.auth.*;
-import ru.yakaska.tenki.service.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import ru.yakaska.tenki.payload.auth.JwtAuthResponse;
+import ru.yakaska.tenki.payload.auth.LoginDto;
+import ru.yakaska.tenki.payload.auth.RegisterDto;
+import ru.yakaska.tenki.service.AuthService;
 
 @RestController
 @RequestMapping("/auth")

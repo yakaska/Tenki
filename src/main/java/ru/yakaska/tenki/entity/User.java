@@ -1,9 +1,11 @@
 package ru.yakaska.tenki.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor

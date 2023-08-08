@@ -1,6 +1,7 @@
 package ru.yakaska.tenki.service;
 
-import ru.yakaska.tenki.payload.auth.*;
+import ru.yakaska.tenki.payload.auth.LoginDto;
+import ru.yakaska.tenki.payload.auth.RegisterDto;
 
 public interface AuthService {
 

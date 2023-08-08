@@ -1,7 +1,7 @@
 package ru.yakaska.tenki.payload.location.geo;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 @Getter
 public class City {
