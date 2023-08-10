@@ -36,17 +36,13 @@ class AuthServiceImpl implements AuthService {
 
     @Override
     public String register(RegisterDto registerDto) {
-
         if (userRepository.existsByUsername(registerDto.getUsername())) {
             throw new UserAlreadyExistsException("User already registered");
         }
-
         User user = new User();
-
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         userRepository.save(user);
-
         return "User registered successfully.";
     }
 }

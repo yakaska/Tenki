@@ -1,6 +1,8 @@
 package ru.yakaska.tenki.controller.location;
 
+import jakarta.validation.*;
 import org.springframework.http.*;
+import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import ru.yakaska.tenki.controller.location.dto.*;
 import ru.yakaska.tenki.service.*;
@@ -33,7 +35,7 @@ public class LocationController {
     }
 
     @PostMapping
-    public ResponseEntity<LocationDto> add(@RequestBody LocationDto location) {
+    public ResponseEntity<LocationDto> add(@RequestBody @Valid LocationDto location) {
         return new ResponseEntity<>(locationService.addLocation(location), HttpStatus.CREATED);
     }
 

@@ -16,6 +16,7 @@ import java.util.*;
 
 @Component
 @Scope("singleton")
+// TODO: 10.08.2023 use feign
 public class OpenWeatherApi {
 
     @Value("${api.host.baseurl}")

@@ -1,5 +1,6 @@
 package ru.yakaska.tenki.controller.auth.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Getter
@@ -7,10 +8,12 @@ import lombok.*;
 @AllArgsConstructor
 public class RegisterDto {
 
+    @NotNull
+    @NotEmpty
     private String username;
 
+    @NotNull
+    @NotEmpty
     private String password;
-
-    private String matchingPassword;
 
 }
