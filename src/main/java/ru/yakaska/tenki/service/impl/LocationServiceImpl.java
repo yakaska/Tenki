@@ -1,5 +1,6 @@
 package ru.yakaska.tenki.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService {
 
     private final CurrentUserService currentUserService;
@@ -27,12 +29,6 @@ public class LocationServiceImpl implements LocationService {
     private final UserRepository userRepository;
 
     private final OpenWeatherApi openWeatherApi;
-
-    public LocationServiceImpl(CurrentUserService currentUserService, UserRepository userRepository, OpenWeatherApi openWeatherApi) {
-        this.currentUserService = currentUserService;
-        this.userRepository = userRepository;
-        this.openWeatherApi = openWeatherApi;
-    }
 
     @Override
     public List<LocationDto> getAllLocations() {

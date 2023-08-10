@@ -1,5 +1,6 @@
 package ru.yakaska.tenki.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,20 +17,13 @@ import ru.yakaska.tenki.security.JwtTokenProvider;
 import ru.yakaska.tenki.service.AuthService;
 
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-
-
+    
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
 
     @Override
     public String login(LoginDto loginDto) {
