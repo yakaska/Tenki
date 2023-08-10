@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.payload.error;
+package ru.yakaska.tenki.dto.error;
 
 import lombok.Getter;
 

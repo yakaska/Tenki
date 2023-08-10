@@ -1,24 +1,18 @@
 package ru.yakaska.tenki.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.rest.webmvc.ResourceNotFoundException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.yakaska.tenki.api.OpenWeatherApi;
-import ru.yakaska.tenki.entity.Location;
-import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.payload.location.LocationDto;
-import ru.yakaska.tenki.payload.location.geo.City;
-import ru.yakaska.tenki.payload.location.weather.WeatherResponse;
-import ru.yakaska.tenki.repository.UserRepository;
-import ru.yakaska.tenki.service.CurrentUserService;
-import ru.yakaska.tenki.service.LocationService;
+import lombok.*;
+import org.springframework.data.rest.webmvc.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
+import ru.yakaska.tenki.api.*;
+import ru.yakaska.tenki.dto.location.*;
+import ru.yakaska.tenki.dto.location.search.*;
+import ru.yakaska.tenki.dto.location.weather.*;
+import ru.yakaska.tenki.entity.*;
+import ru.yakaska.tenki.repository.*;
+import ru.yakaska.tenki.service.*;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,46 +25,41 @@ class LocationServiceImpl implements LocationService {
     private final OpenWeatherApi openWeatherApi;
 
     @Override
-    public List<Location> getAllLocations() {
-
+    public List<LocationDto> getAllLocations() {
         User user = currentUserService.getCurrentUser();
-
         return user.getLocations().stream()
-                .sorted(Comparator.comparing(Location::getId))
+                .map(this::mapToDto)
                 .toList();
     }
 
     @Override
-    public Location getLocationById(Long locationId) {
+    public LocationDto getLocationById(Long locationId) {
         User user = currentUserService.getCurrentUser();
         return user.getLocations()
                 .stream()
-                .filter(loc -> loc.getId().equals(locationId)).findFirst().orElseThrow(
+                .filter(loc -> loc.getId().equals(locationId))
+                .findFirst()
+                .map(this::mapToDto)
+                .orElseThrow(
                         () -> new ResourceNotFoundException("No such location")
                 );
     }
 
     @Override
-    public List<Location> searchLocation(String locationName) {
+    public List<LocationDto> searchLocation(String locationName) {
 
-        WeatherResponse weatherResponse = openWeatherApi.search(locationName);
+        SearchResponse searchResponse = openWeatherApi.search(locationName);
 
-        return cities
-                .stream()
-                .map(city -> Location.builder()
-                        .name(city.getName())
-                        .country(city.getCountry())
-                        .state(city.getState())
-                        .latitude(city.getLatitude())
-                        .longitude(city.getLongitude())
-                        .build())
+        return searchResponse.getLocations().stream()
+                .map(this::mapToDomain)
+                .map(this::mapToDto)
                 .toList();
     }
 
     @Override
-    public Location addLocation(Location location) {
+    public LocationDto addLocation(LocationDto location) {
         User user = currentUserService.getCurrentUser();
-        user.getLocations().add(location);
+        user.getLocations().add(mapToDomain(location));
         userRepository.save(user);
         return location;
     }
@@ -78,16 +67,46 @@ class LocationServiceImpl implements LocationService {
     @Override
     @Transactional
     public void deleteLocationById(Long locationId) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        User user = userRepository.findByUsername(auth.getName()).orElseThrow(
-                () -> new UsernameNotFoundException("User " + auth.getName() + " not found")
-        );
-
+        User user = currentUserService.getCurrentUser();
         boolean isRemoved = user.getLocations().removeIf(location -> location.getId().equals(locationId));
         if (!isRemoved) {
             throw new ResourceNotFoundException("Could not find location");
         }
+    }
+
+    private LocationDto mapToDto(Location location) {
+        WeatherResponse weatherResponse = openWeatherApi.fetchWeather(location.getLatitude(), location.getLongitude());
+        return LocationDto.builder()
+                .id(weatherResponse.getId())
+                .country(location.getCountry())
+                .state(location.getState())
+                .name(location.getName())
+                .description(weatherResponse.getWeather().get(0).getDescription())
+                .temperature(weatherResponse.getMain().getTemp())
+                .latitude(location.getLatitude())
+                .longitude(location.getLongitude())
+                .build();
+    }
+
+    private Location mapToDomain(LocationDto locationDto) {
+        return Location.builder()
+                .id(locationDto.getId())
+                .country(locationDto.getCountry())
+                .state(locationDto.getState())
+                .name(locationDto.getName())
+                .latitude(locationDto.getLatitude())
+                .longitude(locationDto.getLongitude())
+                .build();
+    }
+
+    private Location mapToDomain(SearchItem item) {
+        return Location.builder()
+                .country(item.getCountry())
+                .state(item.getState())
+                .name(item.getName())
+                .latitude(item.getLatitude())
+                .longitude(item.getLongitude())
+                .build();
     }
 
 }

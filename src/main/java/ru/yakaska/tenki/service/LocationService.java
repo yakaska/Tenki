@@ -1,19 +1,18 @@
 package ru.yakaska.tenki.service;
 
-import ru.yakaska.tenki.entity.Location;
-import ru.yakaska.tenki.payload.location.LocationDto;
+import ru.yakaska.tenki.dto.location.*;
 
 import java.util.List;
 
 public interface LocationService {
 
-    List<Location> getAllLocations();
+    List<LocationDto> getAllLocations();
 
-    Location getLocationById(Long locationId);
+    LocationDto getLocationById(Long locationId);
 
-    List<Location> searchLocation(String locationName);
+    List<LocationDto> searchLocation(String locationName);
 
-    Location addLocation(Location location);
+    LocationDto addLocation(LocationDto location);
 
     void deleteLocationById(Long locationId);
 

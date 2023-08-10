@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.yakaska.tenki.payload.error.ErrorDetails;
+import ru.yakaska.tenki.dto.error.ErrorDetails;
 
 import java.util.Date;
 

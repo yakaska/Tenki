@@ -6,8 +6,8 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import ru.yakaska.tenki.payload.location.search.SearchResponse;
-import ru.yakaska.tenki.payload.location.weather.WeatherResponse;
+import ru.yakaska.tenki.dto.location.search.SearchResponse;
+import ru.yakaska.tenki.dto.location.weather.WeatherResponse;
 
 import java.net.URI;
 
@@ -27,7 +27,7 @@ public class OpenWeatherApi {
         this.restTemplate = restTemplate;
     }
 
-    public WeatherResponse getWeather(Double latitude, Double longitude) {
+    public WeatherResponse fetchWeather(Double latitude, Double longitude) {
         URI uri = UriComponentsBuilder
                 .fromUriString(baseUrl + "data/2.5/weather")
                 .queryParam("lat", latitude)

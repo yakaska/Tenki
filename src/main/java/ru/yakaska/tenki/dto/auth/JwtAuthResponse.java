@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.payload.auth;
+package ru.yakaska.tenki.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

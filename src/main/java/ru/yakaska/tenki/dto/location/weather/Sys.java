@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.payload.location.weather;
+package ru.yakaska.tenki.dto.location.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
