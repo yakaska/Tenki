@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.config;
+package ru.yakaska.tenki.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
