@@ -21,6 +21,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @Transient
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
