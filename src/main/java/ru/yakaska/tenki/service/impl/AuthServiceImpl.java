@@ -1,20 +1,17 @@
 package ru.yakaska.tenki.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.exception.TenkiException;
-import ru.yakaska.tenki.dto.auth.LoginDto;
-import ru.yakaska.tenki.dto.auth.RegisterDto;
-import ru.yakaska.tenki.repository.UserRepository;
-import ru.yakaska.tenki.security.JwtTokenProvider;
-import ru.yakaska.tenki.service.AuthService;
+import lombok.*;
+import org.springframework.security.authentication.*;
+import org.springframework.security.core.*;
+import org.springframework.security.core.context.*;
+import org.springframework.security.crypto.password.*;
+import org.springframework.stereotype.*;
+import ru.yakaska.tenki.controller.auth.dto.*;
+import ru.yakaska.tenki.entity.*;
+import ru.yakaska.tenki.exception.*;
+import ru.yakaska.tenki.repository.*;
+import ru.yakaska.tenki.security.*;
+import ru.yakaska.tenki.service.*;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +38,7 @@ class AuthServiceImpl implements AuthService {
     public String register(RegisterDto registerDto) {
 
         if (userRepository.existsByUsername(registerDto.getUsername())) {
-            throw new TenkiException(HttpStatus.BAD_REQUEST, "User already registered");
+            throw new UserAlreadyExistsException("User already registered");
         }
 
         User user = new User();

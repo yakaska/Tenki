@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.dto.location;
+package ru.yakaska.tenki.controller.location.dto;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.annotation.JsonInclude.*;
@@ -6,8 +6,9 @@ import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationDto {
 
     @JsonProperty("id")

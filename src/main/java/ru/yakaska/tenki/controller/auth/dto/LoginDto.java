@@ -1,8 +1,6 @@
-package ru.yakaska.tenki.dto.auth;
+package ru.yakaska.tenki.controller.auth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter

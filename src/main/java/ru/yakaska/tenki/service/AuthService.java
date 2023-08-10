@@ -1,7 +1,6 @@
 package ru.yakaska.tenki.service;
 
-import ru.yakaska.tenki.dto.auth.LoginDto;
-import ru.yakaska.tenki.dto.auth.RegisterDto;
+import ru.yakaska.tenki.controller.auth.dto.*;
 
 public interface AuthService {
 

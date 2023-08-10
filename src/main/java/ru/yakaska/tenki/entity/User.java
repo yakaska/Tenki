@@ -3,7 +3,7 @@ package ru.yakaska.tenki.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter

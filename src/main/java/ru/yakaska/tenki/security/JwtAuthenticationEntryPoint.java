@@ -1,13 +1,12 @@
 package ru.yakaska.tenki.security;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.stereotype.Component;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import org.springframework.security.core.*;
+import org.springframework.security.web.*;
+import org.springframework.stereotype.*;
 
-import java.io.IOException;
+import java.io.*;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

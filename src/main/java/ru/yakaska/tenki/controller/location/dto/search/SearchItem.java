@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.dto.location.search;
+package ru.yakaska.tenki.controller.location.dto.search;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;

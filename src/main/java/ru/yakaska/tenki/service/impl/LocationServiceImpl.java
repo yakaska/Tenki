@@ -5,9 +5,9 @@ import org.springframework.data.rest.webmvc.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import ru.yakaska.tenki.api.*;
-import ru.yakaska.tenki.dto.location.*;
-import ru.yakaska.tenki.dto.location.search.*;
-import ru.yakaska.tenki.dto.location.weather.*;
+import ru.yakaska.tenki.controller.location.dto.*;
+import ru.yakaska.tenki.controller.location.dto.search.*;
+import ru.yakaska.tenki.controller.location.dto.weather.*;
 import ru.yakaska.tenki.entity.*;
 import ru.yakaska.tenki.repository.*;
 import ru.yakaska.tenki.service.*;
@@ -48,9 +48,9 @@ class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> searchLocation(String locationName) {
 
-        SearchResponse searchResponse = openWeatherApi.search(locationName);
+        List<SearchItem> searchResponse = openWeatherApi.search(locationName);
 
-        return searchResponse.getLocations().stream()
+        return searchResponse.stream()
                 .map(this::mapToDomain)
                 .map(this::mapToDto)
                 .toList();
