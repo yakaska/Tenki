@@ -34,8 +34,8 @@ public class LocationController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<LocationDto> addLocation(@RequestBody LocationDto locationDto) {
-        return new ResponseEntity<>(locationService.addLocation(locationDto), HttpStatus.CREATED);
+    public ResponseEntity<LocationDto> addLocation(@RequestBody LocationDto location) {
+        return new ResponseEntity<>(locationService.addLocation(location), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

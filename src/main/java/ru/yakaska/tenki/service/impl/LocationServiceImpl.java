@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LocationServiceImpl implements LocationService {
+class LocationServiceImpl implements LocationService {
 
     private final CurrentUserService currentUserService;
 
@@ -31,65 +31,48 @@ public class LocationServiceImpl implements LocationService {
     private final OpenWeatherApi openWeatherApi;
 
     @Override
-    public List<LocationDto> getAllLocations() {
+    public List<Location> getAllLocations() {
 
         User user = currentUserService.getCurrentUser();
 
         return user.getLocations().stream()
-                .map(this::mapToDto)
-                .sorted(Comparator.comparing(LocationDto::getId))
+                .sorted(Comparator.comparing(Location::getId))
                 .toList();
     }
 
     @Override
-    public LocationDto getLocationById(Long locationId) {
-
+    public Location getLocationById(Long locationId) {
         User user = currentUserService.getCurrentUser();
-
-        Location location = user.getLocations()
+        return user.getLocations()
                 .stream()
                 .filter(loc -> loc.getId().equals(locationId)).findFirst().orElseThrow(
                         () -> new ResourceNotFoundException("No such location")
                 );
-
-        return mapToDto(location);
     }
 
     @Override
-    public List<LocationDto> searchLocation(String locationName) {
+    public List<Location> searchLocation(String locationName) {
 
-        List<City> cities = openWeatherApi.search(locationName);
+        WeatherResponse weatherResponse = openWeatherApi.search(locationName);
 
         return cities
                 .stream()
-                .map(city -> {
-                    Location location = new Location();
-                    location.setName(city.getName());
-                    location.setCountry(city.getCountry());
-                    location.setState(city.getState());
-                    location.setLatitude(city.getLatitude());
-                    location.setLongitude(city.getLongitude());
-                    return mapToDto(location);
-                })
+                .map(city -> Location.builder()
+                        .name(city.getName())
+                        .country(city.getCountry())
+                        .state(city.getState())
+                        .latitude(city.getLatitude())
+                        .longitude(city.getLongitude())
+                        .build())
                 .toList();
     }
 
     @Override
-    public LocationDto addLocation(LocationDto locationDto) {
+    public Location addLocation(Location location) {
         User user = currentUserService.getCurrentUser();
-
-        Location location = new Location();
-        location.setId(locationDto.getId());
-        location.setName(locationDto.getName());
-        location.setCountry(locationDto.getCountry());
-        location.setState(locationDto.getState());
-        location.setLatitude(locationDto.getLatitude());
-        location.setLongitude(locationDto.getLongitude());
-
         user.getLocations().add(location);
         userRepository.save(user);
-
-        return mapToDto(location);
+        return location;
     }
 
     @Override
@@ -105,22 +88,6 @@ public class LocationServiceImpl implements LocationService {
         if (!isRemoved) {
             throw new ResourceNotFoundException("Could not find location");
         }
-    }
-
-
-    private LocationDto mapToDto(Location location) {
-        WeatherResponse weatherResponse = openWeatherApi.getWeather(location.getLatitude(), location.getLongitude());
-
-        LocationDto resultDto = new LocationDto();
-        resultDto.setId(weatherResponse.getId());
-        resultDto.setName(location.getName());
-        resultDto.setCountry(location.getCountry());
-        resultDto.setState(location.getState());
-        resultDto.setTemperature(weatherResponse.getMain().getTemperature());
-        resultDto.setDescription(weatherResponse.getWeather().get(0).getDescription());
-        resultDto.setLatitude(weatherResponse.getCoordinate().getLatitude());
-        resultDto.setLongitude(weatherResponse.getCoordinate().getLongitude());
-        return resultDto;
     }
 
 }

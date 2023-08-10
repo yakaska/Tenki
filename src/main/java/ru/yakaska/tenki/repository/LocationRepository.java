@@ -6,6 +6,4 @@ import ru.yakaska.tenki.entity.Location;
 
 @Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
-
-
 }

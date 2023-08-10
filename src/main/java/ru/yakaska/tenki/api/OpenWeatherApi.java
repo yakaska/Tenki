@@ -2,18 +2,14 @@ package ru.yakaska.tenki.api;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import ru.yakaska.tenki.exception.TenkiException;
-import ru.yakaska.tenki.payload.location.geo.City;
+import ru.yakaska.tenki.payload.location.search.SearchResponse;
 import ru.yakaska.tenki.payload.location.weather.WeatherResponse;
 
 import java.net.URI;
-import java.util.List;
 
 @Component
 @Scope("singleton")
@@ -49,7 +45,7 @@ public class OpenWeatherApi {
         return weatherResponse;
     }
 
-    public List<City> search(String cityName) {
+    public SearchResponse search(String cityName) {
         URI uri = UriComponentsBuilder
                 .fromUriString(baseUrl + "geo/1.0/direct")
                 .queryParam("q", cityName)
@@ -59,16 +55,13 @@ public class OpenWeatherApi {
                 .build(false)
                 .toUri();
 
-        ParameterizedTypeReference<List<City>> type = new ParameterizedTypeReference<>() {
-        };
+        SearchResponse searchResponse = restTemplate.getForEntity(uri, SearchResponse.class).getBody();
 
-        List<City> cities = restTemplate.exchange(uri, HttpMethod.GET, null, type).getBody();
-
-        if (cities == null) {
-            throw new TenkiException(HttpStatus.BAD_REQUEST, "No such location");
+        if (searchResponse == null) {
+            throw new ResourceNotFoundException("Could not find such location");
         }
 
-        return cities;
+        return searchResponse;
     }
 
 }

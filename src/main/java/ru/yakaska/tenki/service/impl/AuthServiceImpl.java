@@ -18,7 +18,7 @@ import ru.yakaska.tenki.service.AuthService;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+class AuthServiceImpl implements AuthService {
     
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
