@@ -12,7 +12,7 @@ public interface LocationService {
 
     List<LocationDto> searchLocation(String locationName);
 
-    LocationDto addLocation(LocationDto location);
+    LocationDto addLocation(LocationDto locationDto);
 
     void deleteLocationById(Long locationId);
 

@@ -6,17 +6,17 @@ import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import ru.yakaska.tenki.api.*;
 import ru.yakaska.tenki.controller.location.dto.*;
-import ru.yakaska.tenki.controller.location.dto.search.*;
-import ru.yakaska.tenki.controller.location.dto.weather.*;
 import ru.yakaska.tenki.entity.*;
 import ru.yakaska.tenki.repository.*;
 import ru.yakaska.tenki.service.*;
+import ru.yakaska.tenki.service.dto.search.*;
+import ru.yakaska.tenki.service.dto.weather.*;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-class LocationServiceImpl implements LocationService {
+public class LocationServiceImpl implements LocationService {
 
     private final CurrentUserService currentUserService;
 

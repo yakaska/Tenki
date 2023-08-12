@@ -2,7 +2,6 @@ package ru.yakaska.tenki.controller.location;
 
 import jakarta.validation.*;
 import org.springframework.http.*;
-import org.springframework.validation.annotation.*;
 import org.springframework.web.bind.annotation.*;
 import ru.yakaska.tenki.controller.location.dto.*;
 import ru.yakaska.tenki.service.*;

@@ -1,4 +1,4 @@
-package ru.yakaska.tenki.controller.location.dto.weather;
+package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;

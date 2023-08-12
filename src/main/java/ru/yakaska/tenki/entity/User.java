@@ -30,6 +30,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "location_id", referencedColumnName = "id")
     )
-    private Set<Location> locations;
+    private Set<Location> locations = new HashSet<>();
 
 }

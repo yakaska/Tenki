@@ -8,8 +8,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.client.*;
 import org.springframework.web.util.*;
-import ru.yakaska.tenki.controller.location.dto.search.*;
-import ru.yakaska.tenki.controller.location.dto.weather.*;
+import ru.yakaska.tenki.service.dto.search.*;
+import ru.yakaska.tenki.service.dto.weather.*;
 
 import java.net.*;
 import java.util.*;
