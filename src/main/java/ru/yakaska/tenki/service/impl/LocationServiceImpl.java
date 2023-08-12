@@ -2,11 +2,13 @@ package ru.yakaska.tenki.service.impl;
 
 import lombok.*;
 import org.springframework.data.rest.webmvc.*;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import ru.yakaska.tenki.api.*;
 import ru.yakaska.tenki.controller.location.dto.*;
 import ru.yakaska.tenki.entity.*;
+import ru.yakaska.tenki.entity.User;
 import ru.yakaska.tenki.repository.*;
 import ru.yakaska.tenki.service.*;
 import ru.yakaska.tenki.service.dto.search.*;
@@ -18,23 +20,19 @@ import java.util.*;
 @RequiredArgsConstructor
 public class LocationServiceImpl implements LocationService {
 
-    private final CurrentUserService currentUserService;
-
     private final UserRepository userRepository;
 
     private final OpenWeatherApi openWeatherApi;
 
     @Override
-    public List<LocationDto> getAllLocations() {
-        User user = currentUserService.getCurrentUser();
+    public List<LocationDto> getAllLocations(User user) {
         return user.getLocations().stream()
                 .map(this::mapToDto)
                 .toList();
     }
 
     @Override
-    public LocationDto getLocationById(Long locationId) {
-        User user = currentUserService.getCurrentUser();
+    public LocationDto getLocationById(Long locationId, User user) {
         return user.getLocations()
                 .stream()
                 .filter(loc -> loc.getId().equals(locationId))
@@ -57,8 +55,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
-    public LocationDto addLocation(LocationDto location) {
-        User user = currentUserService.getCurrentUser();
+    public LocationDto addLocation(LocationDto location, User user) {
         user.getLocations().add(mapToDomain(location));
         userRepository.save(user);
         return location;
@@ -66,8 +63,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional
-    public void deleteLocationById(Long locationId) {
-        User user = currentUserService.getCurrentUser();
+    public void deleteLocationById(Long locationId, User user) {
         boolean isRemoved = user.getLocations().removeIf(location -> location.getId().equals(locationId));
         if (!isRemoved) {
             throw new ResourceNotFoundException("Could not find location");

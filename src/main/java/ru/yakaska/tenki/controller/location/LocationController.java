@@ -14,18 +14,22 @@ public class LocationController {
 
     private final LocationService locationService;
 
-    public LocationController(LocationService locationService) {
+    private final CurrentUserService currentUserService;
+
+
+    public LocationController(LocationService locationService, CurrentUserService currentUserService) {
         this.locationService = locationService;
+        this.currentUserService = currentUserService;
     }
 
     @GetMapping
     public List<LocationDto> getAll() {
-        return locationService.getAllLocations();
+        return locationService.getAllLocations(currentUserService.getCurrentUser());
     }
 
     @GetMapping("/{id}")
     public LocationDto getById(@PathVariable Long id) {
-        return locationService.getLocationById(id);
+        return locationService.getLocationById(id, currentUserService.getCurrentUser());
     }
 
     @GetMapping("search")
@@ -35,12 +39,12 @@ public class LocationController {
 
     @PostMapping
     public ResponseEntity<LocationDto> add(@RequestBody @Valid LocationDto location) {
-        return new ResponseEntity<>(locationService.addLocation(location), HttpStatus.CREATED);
+        return new ResponseEntity<>(locationService.addLocation(location, currentUserService.getCurrentUser()), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable(name = "id") Long id) {
-        locationService.deleteLocationById(id);
+        locationService.deleteLocationById(id, currentUserService.getCurrentUser());
         return ResponseEntity.noContent().build();
     }
 

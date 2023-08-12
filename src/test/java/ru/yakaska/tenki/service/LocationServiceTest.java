@@ -7,7 +7,6 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.*;
 import org.springframework.boot.jdbc.*;
 import org.springframework.boot.test.autoconfigure.jdbc.*;
-import org.springframework.boot.test.context.*;
 import org.springframework.security.test.context.support.*;
 import ru.yakaska.tenki.controller.location.dto.*;
 import ru.yakaska.tenki.entity.*;
@@ -31,9 +30,6 @@ class LocationServiceTest {
     @InjectMocks
     private LocationServiceImpl locationService;
 
-    @InjectMocks
-    private CurrentUserService currentUserService;
-
     @Test
     @WithMockUser
     void LocationService_AddLocation_ReturnsLocationDto() {
@@ -52,7 +48,6 @@ class LocationServiceTest {
                 .locations(locations)
                 .build();
 
-        when(currentUserService.getCurrentUser()).thenReturn(user);
         when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         LocationDto locationDto = LocationDto.builder()
@@ -66,7 +61,7 @@ class LocationServiceTest {
                 .build();
 
 
-        LocationDto savedLocation = locationService.addLocation(locationDto);
+        LocationDto savedLocation = locationService.addLocation(locationDto, user);
 
         Assertions.assertThat(savedLocation)
                 .isNotNull()
