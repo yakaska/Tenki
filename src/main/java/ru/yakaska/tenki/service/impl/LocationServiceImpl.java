@@ -1,20 +1,19 @@
 package ru.yakaska.tenki.service.impl;
 
-import lombok.*;
-import org.springframework.data.rest.webmvc.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-import ru.yakaska.tenki.api.*;
-import ru.yakaska.tenki.controller.location.dto.*;
-import ru.yakaska.tenki.entity.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.yakaska.tenki.api.OpenWeatherApi;
+import ru.yakaska.tenki.controller.location.dto.LocationDto;
+import ru.yakaska.tenki.entity.Location;
 import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.repository.*;
-import ru.yakaska.tenki.service.*;
-import ru.yakaska.tenki.service.dto.search.*;
-import ru.yakaska.tenki.service.dto.weather.*;
+import ru.yakaska.tenki.repository.UserRepository;
+import ru.yakaska.tenki.service.LocationService;
+import ru.yakaska.tenki.service.dto.search.SearchItem;
+import ru.yakaska.tenki.service.dto.weather.WeatherResponse;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor

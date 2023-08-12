@@ -1,6 +1,6 @@
 package ru.yakaska.tenki.service.dto.weather;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Coord{
 

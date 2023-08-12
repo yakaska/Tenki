@@ -1,12 +1,12 @@
 package ru.yakaska.tenki.service;
 
-import lombok.*;
-import org.springframework.security.core.*;
-import org.springframework.security.core.context.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.repository.*;
+import ru.yakaska.tenki.repository.UserRepository;
 
 @Service
 @RequiredArgsConstructor

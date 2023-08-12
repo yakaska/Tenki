@@ -1,12 +1,15 @@
 package ru.yakaska.tenki.security;
 
-import org.springframework.security.core.*;
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 import ru.yakaska.tenki.entity.User;
-import ru.yakaska.tenki.repository.*;
+import ru.yakaska.tenki.repository.UserRepository;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Set;
 
 @Service
 public class TenkiUserDetailsService implements UserDetailsService {

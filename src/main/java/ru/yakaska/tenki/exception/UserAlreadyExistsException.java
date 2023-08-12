@@ -1,7 +1,7 @@
 package ru.yakaska.tenki.exception;
 
-import org.springframework.http.*;
-import org.springframework.web.server.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 public class UserAlreadyExistsException extends ResponseStatusException {
 

@@ -1,9 +1,9 @@
 package ru.yakaska.tenki.service;
 
-import ru.yakaska.tenki.controller.location.dto.*;
-import ru.yakaska.tenki.entity.*;
+import ru.yakaska.tenki.controller.location.dto.LocationDto;
+import ru.yakaska.tenki.entity.User;
 
-import java.util.*;
+import java.util.List;
 
 public interface LocationService {
 

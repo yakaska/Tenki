@@ -1,9 +1,9 @@
 package ru.yakaska.tenki.service.dto.weather;
 
-import com.fasterxml.jackson.annotation.*;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
-import java.util.*;
+import java.util.List;
 
 @Getter
 public class WeatherResponse{
