@@ -47,6 +47,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "location_id", referencedColumnName = "id")
     )
+    @Builder.Default
     private Set<Location> locations = new HashSet<>();
 
 }
