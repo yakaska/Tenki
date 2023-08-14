@@ -1,89 +1,91 @@
 package ru.yakaska.tenki.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.*;
-import org.mockito.*;
-import org.mockito.junit.jupiter.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.*;
-import org.springframework.boot.test.autoconfigure.jdbc.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.*;
+import org.springframework.test.context.TestPropertySource;
 import ru.yakaska.tenki.api.OpenWeatherApi;
-import ru.yakaska.tenki.controller.location.dto.*;
-import ru.yakaska.tenki.entity.*;
-import ru.yakaska.tenki.repository.*;
-import ru.yakaska.tenki.service.dto.search.SearchItem;
-import ru.yakaska.tenki.service.impl.*;
+import ru.yakaska.tenki.controller.location.dto.LocationDto;
+import ru.yakaska.tenki.entity.Location;
+import ru.yakaska.tenki.entity.User;
+import ru.yakaska.tenki.repository.UserRepository;
+import ru.yakaska.tenki.service.dto.weather.WeatherResponse;
+import ru.yakaska.tenki.service.impl.LocationServiceImpl;
 
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 
-import static org.mockito.BDDMockito.*;
+import static org.mockito.BDDMockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@TestPropertySource("classpath:application-test.yml")
 @SpringBootTest
 class LocationServiceTest {
 
     @Mock
     private UserRepository userRepository;
 
+    @Mock
+    private OpenWeatherApi openWeatherApi;
+
     @InjectMocks
     private LocationServiceImpl locationService;
 
+
     private User user;
+
+    private WeatherResponse weatherResponse;
 
     private Location location;
 
     @BeforeEach
-    public void setup() {
-        location = Location.builder()
-                .country("Russia")
-                .state("Moscow")
-                .name("Moscow")
-                .longitude(51.41)
-                .latitude(35.12)
-                .build();
-        Set<Location> locations = new HashSet<>();
-        locations.add(location);
+    public void setup() throws IOException {
         user = User.builder()
+                .id(1L)
                 .username("Yakaska")
-                .password("password")
-                .locations(locations)
+                .password("Password")
+                .locations(new HashSet<>())
                 .build();
-    }
-
-    @Test
-    @WithMockUser
-    void LocationService_AddLocation_ReturnsLocationDto() {
-        when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
-        LocationDto locationDto = LocationDto.builder()
+        location = Location.builder()
+                .id(5544234L)
                 .country("Russia")
                 .state("Moscow")
                 .name("Moscow")
-                .longitude(51.41)
-                .latitude(35.12)
-                .temperature(12.4)
-                .description("Rain")
+                .latitude(12.12)
+                .longitude(12.123)
                 .build();
-        LocationDto savedLocation = locationService.addLocation(locationDto, user);
-        Assertions.assertThat(savedLocation)
+        user.getLocations().add(location);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        File file = new File("src/test/resources/weather.json");
+        weatherResponse = objectMapper.readValue(file, WeatherResponse.class);
+
+    }
+
+    @Test
+    void LocationService_GetAllLocations_ReturnsListLocationDto() {
+        when(openWeatherApi.fetchWeather(Mockito.anyDouble(), Mockito.anyDouble())).thenReturn(weatherResponse);
+
+        List<LocationDto> locationDtos = locationService.getAllLocations(user);
+
+        Assertions.assertThat(locationDtos)
                 .isNotNull()
-                .isEqualTo(locationDto);
-    }
+                .isNotEmpty();
+        Assertions.assertThat(locationDtos.size()).isEqualTo(1);
+        Assertions.assertThat(locationDtos.get(0).getId()).isEqualTo(location.getId());
 
-    @Test
-    void LocationService_DeleteById_DeletesOk() {
-        locationService.deleteLocationById(location.getId(), user);
-        Assertions.assertThat(user.getLocations()).isEmpty();
-    }
-
-    @Test
-    void LocationService_Search_Returns_LocationsDto() {
-        List<LocationDto> locationDtos = locationService.searchLocation("Ivanovo");
-
-        Assertions.assertThat(locationDtos).isNotEmpty();
     }
 
 

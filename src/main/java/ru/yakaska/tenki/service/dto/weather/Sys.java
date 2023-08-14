@@ -1,7 +1,9 @@
 package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class Sys{
 
 	@JsonProperty("country")
@@ -19,23 +21,4 @@ public class Sys{
 	@JsonProperty("type")
 	private int type;
 
-	public String getCountry(){
-		return country;
-	}
-
-	public int getSunrise(){
-		return sunrise;
-	}
-
-	public int getSunset(){
-		return sunset;
-	}
-
-	public int getId(){
-		return id;
-	}
-
-	public int getType(){
-		return type;
-	}
 }

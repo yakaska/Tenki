@@ -1,0 +1,44 @@
+{
+  "coord": {
+    "lon": 44.34,
+    "lat": 10.99
+  },
+  "weather": [
+    {
+      "id": 803,
+      "main": "Clouds",
+      "description": "broken clouds",
+      "icon": "04d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 302.99,
+    "feels_like": 308.52,
+    "temp_min": 302.99,
+    "temp_max": 302.99,
+    "pressure": 1004,
+    "humidity": 73,
+    "sea_level": 1004,
+    "grnd_level": 1004
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 4.85,
+    "deg": 354,
+    "gust": 5.55
+  },
+  "clouds": {
+    "all": 55
+  },
+  "dt": 1692010434,
+  "sys": {
+    "country": "SO",
+    "sunrise": 1691981551,
+    "sunset": 1692026552
+  },
+  "timezone": 10800,
+  "id": 54746,
+  "name": "Lughaye",
+  "cod": 200
+}

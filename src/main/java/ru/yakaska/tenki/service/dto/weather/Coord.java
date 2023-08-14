@@ -1,7 +1,10 @@
 package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.Getter;
 
+@Data
 public class Coord{
 
 	@JsonProperty("lon")
@@ -10,11 +13,4 @@ public class Coord{
 	@JsonProperty("lat")
 	private Object lat;
 
-	public Object getLon(){
-		return lon;
-	}
-
-	public Object getLat(){
-		return lat;
-	}
 }

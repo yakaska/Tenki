@@ -22,9 +22,7 @@ class UserRepositoryTest {
                 .username("Yakaska")
                 .password("password")
                 .build();
-
         User savedUser = userRepository.save(user);
-
 
         Assertions.assertThat(savedUser).isNotNull();
         Assertions.assertThat(savedUser.getId()).isPositive();
@@ -34,18 +32,53 @@ class UserRepositoryTest {
 
     @Test
     void UserRepository_FindByUsername_ReturnsUser() {
+        User user = User.builder()
+                .username("Yakaska")
+                .password("password")
+                .build();
+        userRepository.save(user);
+        User foundUser = userRepository.findByUsername("Yakaska").get();
 
+        Assertions.assertThat(foundUser).isNotNull();
+        Assertions.assertThat(foundUser.getUsername()).isEqualTo("Yakaska");
+
+    }
+
+    @Test
+    void UserRepository_ExistsByUsername_ReturnsTrue() {
+        User user = User.builder()
+                .username("Yakaska")
+                .password("password")
+                .build();
+        User savedUser = userRepository.save(user);
+        Boolean isFound = userRepository.existsByUsername(savedUser.getUsername());
+
+        Assertions.assertThat(isFound).isTrue();
+    }
+
+    @Test
+    void UserRepository_SaveWithLocations_ReturnsUserWithLocations() {
         User user = User.builder()
                 .username("Yakaska")
                 .password("password")
                 .build();
 
-        userRepository.save(user);
+        Location location = Location.builder()
+                .id(55235L)
+                .country("Russia")
+                .state("Moscow")
+                .name("Moscow")
+                .latitude(10.12)
+                .latitude(12.40)
+                .build();
 
-        User foundUser = userRepository.findByUsername("Yakaska").get();
+        user.getLocations().add(location);
 
-        Assertions.assertThat(foundUser).isNotNull();
-        Assertions.assertThat(foundUser.getUsername()).isEqualTo("Yakaska");
+        User savedUser = userRepository.save(user);
+
+        Assertions.assertThat(savedUser.getLocations())
+                .isNotNull()
+                .isNotEmpty();
 
     }
 

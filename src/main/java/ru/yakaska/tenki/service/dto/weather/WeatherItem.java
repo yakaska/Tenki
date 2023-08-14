@@ -1,7 +1,9 @@
 package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class WeatherItem{
 
 	@JsonProperty("icon")
@@ -16,19 +18,4 @@ public class WeatherItem{
 	@JsonProperty("id")
 	private int id;
 
-	public String getIcon(){
-		return icon;
-	}
-
-	public String getDescription(){
-		return description;
-	}
-
-	public String getMain(){
-		return main;
-	}
-
-	public int getId(){
-		return id;
-	}
 }

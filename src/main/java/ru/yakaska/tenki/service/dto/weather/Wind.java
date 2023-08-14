@@ -1,7 +1,9 @@
 package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class Wind{
 
 	@JsonProperty("deg")
@@ -13,15 +15,4 @@ public class Wind{
 	@JsonProperty("gust")
 	private Object gust;
 
-	public int getDeg(){
-		return deg;
-	}
-
-	public Object getSpeed(){
-		return speed;
-	}
-
-	public Object getGust(){
-		return gust;
-	}
 }

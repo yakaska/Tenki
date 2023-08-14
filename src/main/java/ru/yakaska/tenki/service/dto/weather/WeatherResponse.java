@@ -1,11 +1,12 @@
 package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+@Data
 public class WeatherResponse{
 
 	@JsonProperty("visibility")
@@ -40,6 +41,9 @@ public class WeatherResponse{
 
 	@JsonProperty("base")
 	private String base;
+
+	@JsonProperty("timezone")
+	private Long timezone;
 
 	@JsonProperty("wind")
 	private Wind wind;

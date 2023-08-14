@@ -1,9 +1,10 @@
 package ru.yakaska.tenki.service.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 public class Main {
 
     @JsonProperty("temp")
