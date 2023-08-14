@@ -26,7 +26,7 @@ public class LocationServiceImpl implements LocationService {
     @Override
     public List<LocationDto> getAllLocations(User user) {
         return user.getLocations().stream()
-                .map(this::mapToDto)
+                .map(this::fillDto)
                 .toList();
     }
 
@@ -36,7 +36,7 @@ public class LocationServiceImpl implements LocationService {
                 .stream()
                 .filter(loc -> loc.getId().equals(locationId))
                 .findFirst()
-                .map(this::mapToDto)
+                .map(this::fillDto)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("No such location")
                 );
@@ -49,7 +49,7 @@ public class LocationServiceImpl implements LocationService {
 
         return searchResponse.stream()
                 .map(this::mapToDomain)
-                .map(this::mapToDto)
+                .map(this::fillDto)
                 .toList();
     }
 
@@ -69,7 +69,7 @@ public class LocationServiceImpl implements LocationService {
         }
     }
 
-    private LocationDto mapToDto(Location location) {
+    private LocationDto fillDto(Location location) {
         WeatherResponse weatherResponse = openWeatherApi.fetchWeather(location.getLatitude(), location.getLongitude());
         return LocationDto.builder()
                 .id(weatherResponse.getId())

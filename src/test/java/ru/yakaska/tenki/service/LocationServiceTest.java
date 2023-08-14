@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import static org.mockito.BDDMockito.when;
+import static org.mockito.Mockito.spy;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
@@ -76,10 +77,9 @@ class LocationServiceTest {
 
     @Test
     void LocationService_GetAllLocations_ReturnsListLocationDto() {
-        when(openWeatherApi.fetchWeather(Mockito.anyDouble(), Mockito.anyDouble())).thenReturn(weatherResponse);
+        Mockito.when(openWeatherApi.fetchWeather(Mockito.anyDouble(), Mockito.anyDouble())).thenReturn(weatherResponse);
 
         List<LocationDto> locationDtos = locationService.getAllLocations(user);
-
         Assertions.assertThat(locationDtos)
                 .isNotNull()
                 .isNotEmpty();
