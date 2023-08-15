@@ -20,8 +20,8 @@ import ru.yakaska.tenki.controller.location.dto.LocationDto;
 import ru.yakaska.tenki.entity.Location;
 import ru.yakaska.tenki.entity.User;
 import ru.yakaska.tenki.repository.UserRepository;
-import ru.yakaska.tenki.service.dto.search.SearchItem;
-import ru.yakaska.tenki.service.dto.weather.WeatherResponse;
+import ru.yakaska.tenki.api.dto.search.SearchItem;
+import ru.yakaska.tenki.api.dto.weather.WeatherResponse;
 import ru.yakaska.tenki.service.impl.LocationServiceImpl;
 
 import java.io.File;
@@ -33,9 +33,6 @@ import java.util.List;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource("classpath:application-test.yml")
 class LocationServiceTest {
-
-    @Mock
-    private UserRepository userRepository;
 
     @Mock
     private OpenWeatherApi openWeatherApi;

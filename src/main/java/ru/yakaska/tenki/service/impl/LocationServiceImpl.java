@@ -5,13 +5,13 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yakaska.tenki.api.OpenWeatherApi;
+import ru.yakaska.tenki.api.dto.search.SearchItem;
+import ru.yakaska.tenki.api.dto.weather.WeatherResponse;
 import ru.yakaska.tenki.controller.location.dto.LocationDto;
 import ru.yakaska.tenki.entity.Location;
 import ru.yakaska.tenki.entity.User;
 import ru.yakaska.tenki.repository.UserRepository;
 import ru.yakaska.tenki.service.LocationService;
-import ru.yakaska.tenki.service.dto.search.SearchItem;
-import ru.yakaska.tenki.service.dto.weather.WeatherResponse;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package ru.yakaska.tenki.service.dto.weather;
+package ru.yakaska.tenki.api.dto.weather;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class Main {

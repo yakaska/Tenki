@@ -1,8 +1,7 @@
-package ru.yakaska.tenki.service.dto.search;
+package ru.yakaska.tenki.api.dto.search;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import lombok.Getter;
 
 import java.util.List;
 

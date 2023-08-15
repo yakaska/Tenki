@@ -8,8 +8,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import ru.yakaska.tenki.service.dto.search.SearchItem;
-import ru.yakaska.tenki.service.dto.weather.WeatherResponse;
+import ru.yakaska.tenki.api.dto.search.SearchItem;
+import ru.yakaska.tenki.api.dto.weather.WeatherResponse;
 
 import java.net.URI;
 import java.util.List;
