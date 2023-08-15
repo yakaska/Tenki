@@ -2,7 +2,7 @@ spring:
   application:
     name: Tenki
   datasource:
-    url: jdbc:h2:~/tenki
+    url: jdbc:h2:mem:tenki
     username: user
     password: pass
     driverClassName: org.h2.Driver
