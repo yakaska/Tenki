@@ -12,7 +12,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ru.yakaska.tenki.controller.auth.AuthController;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -22,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class AuthControllerTest {
+class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -90,18 +89,17 @@ public class AuthControllerTest {
         String loginRequestBody = new String(Files.readAllBytes(Paths.get("src/test/resources/controller/login.json")));
 
         mockMvc.perform(post("/auth/register")
-                       .contentType(MediaType.APPLICATION_JSON)
-                       .content(loginRequestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(loginRequestBody)
                 ).andExpect(status().isCreated())
-               .andReturn();
+                .andReturn();
 
         loginRequestBody = new String(Files.readAllBytes(Paths.get("src/test/resources/controller/wrong_login.json")));
 
         mockMvc.perform(post("/auth/login")
-                       .contentType(MediaType.APPLICATION_JSON)
-                       .content(loginRequestBody)
-                ).andExpect(status().isUnauthorized());
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginRequestBody)
+        ).andExpect(status().isUnauthorized());
     }
-
 
 }
