@@ -44,7 +44,7 @@ public class OpenWeatherApi {
         WeatherResponse weatherResponse = restTemplate.getForEntity(uri, WeatherResponse.class).getBody();
 
         if (weatherResponse == null) {
-            throw new IllegalStateException("Weather for that location is not available");
+            throw new ResourceNotFoundException("Weather for that location is not available");
         }
         return weatherResponse;
     }

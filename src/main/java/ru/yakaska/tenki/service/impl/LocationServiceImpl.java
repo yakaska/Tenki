@@ -47,6 +47,10 @@ public class LocationServiceImpl implements LocationService {
 
         List<SearchItem> searchResponse = openWeatherApi.search(locationName);
 
+        if (searchResponse.isEmpty()) {
+            throw new ResourceNotFoundException("Could not find location");
+        }
+
         return searchResponse.stream()
                 .map(this::mapToDomain)
                 .map(this::fillDto)

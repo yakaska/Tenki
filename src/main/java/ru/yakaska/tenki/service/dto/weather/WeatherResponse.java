@@ -42,9 +42,6 @@ public class WeatherResponse{
 	@JsonProperty("base")
 	private String base;
 
-	@JsonProperty("timezone")
-	private Long timezone;
-
 	@JsonProperty("wind")
 	private Wind wind;
 
